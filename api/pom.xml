@@ -8,11 +8,11 @@
 		<version>3.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>med.voll</groupId>
+	<groupId>unisolar</groupId>
 	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api</name>
-	<description>API Rest da aplicação vet.flordelotus</description>
+	<description>API Rest da aplicação Unisolar</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
