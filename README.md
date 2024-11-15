@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Flor de Lótus - Backend
 
 Este é o código fonte do projeto Flor de Lótus, uma aplicação de gerenciamento veterinário desenvolvida em Java utilizando Spring Boot.
@@ -85,3 +86,6 @@ mvn test
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+=======
+# unisolar-api
+>>>>>>> fb6412f15b21d2f24480012672d6e20edc534925
