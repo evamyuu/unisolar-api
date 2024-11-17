@@ -1,0 +1,193 @@
+@import url(reset.css);
+
+body {
+    background: #1A1A1A; /* Dark background for dark mode */
+    color: #D1D1D1; /* Light text for contrast */
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Ensure the SVG stays behind the content */
+}
+
+/* SVG container */
+.svg-container {
+    position: absolute; /* Places the SVG behind the content */
+    bottom: 0; /* Places the SVG at the bottom of the screen */
+    left: 0;
+    width: 100%;
+    z-index: -1; /* Places the SVG behind other elements */
+}
+
+/* Main container */
+.container {
+    width: 100%;
+    max-width: 850px;
+    background-color: #2A2A2A; /* Darker container */
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 26px;
+    color: #FF710C; /* Sol Acolhedor - Main header color */
+    font-weight: 700;
+}
+
+.header__actions a {
+    text-decoration: none;
+    color: #11E9C4; /* Verde Vida */
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.header__actions a:hover {
+    color: #FF710C; /* Sol Acolhedor - Hover to highlight */
+}
+
+/* Chat area */
+.chat {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #333333; /* Darker background for the chat */
+    border-radius: 25px;
+}
+
+/* Message bubbles */
+.chat__bubble {
+    padding: 15px;
+    border-radius: 20px;
+    margin: 10px 0;
+    max-width: 75%;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Bot message bubble style */
+.chat__bubble--bot {
+    background-color: #FF710C; /* Sol Acolhedor */
+    color: white;
+    text-align: left;
+}
+
+/* User message bubble style */
+.chat__bubble--user {
+    background-color: #11E9C4; /* Verde Vida */
+    color: white;
+    text-align: right;
+    align-self: flex-end;
+}
+
+/* Message input area */
+.input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.input__container {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 50px;
+    background-color: #444444; /* Dark background for input */
+    padding: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.input__input {
+    width: 100%;
+    height: 45px;
+    border: none;
+    padding-left: 20px;
+    border-radius: 25px;
+    background-color: transparent;
+    font-size: 16px;
+    color: #D1D1D1; /* Light text for input */
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.input__input::placeholder {
+    color: #888;
+}
+
+.input__input:focus {
+    background-color: #555555; /* Focus with dark background */
+}
+
+/* Send button */
+.input__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    background-color: #11E9C4; /* Verde Vida */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.input__send:hover {
+    background-color: #0FBFA5; /* Softer Verde for hover */
+    transform: scale(1.1);
+}
+
+/* Icons */
+.icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.icon--send-message {
+    width: 22px;
+    height: 22px;
+    background-image: url(../img/icon-send.svg);
+    background-size: cover;
+}
+
+/* Clear conversation button style */
+.clear-conversation {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #FF710C; /* Sol Acolhedor */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.clear-conversation:hover {
+    background-color: #FD8301; /* Lighter Sol Acolhedor shade for hover */
+    transform: scale(1.05);
+}
