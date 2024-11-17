@@ -105,4 +105,8 @@ public class User implements UserDetails {
         this.deletedAt = LocalDateTime.now();
         this.active = false;
     }
+
+    public boolean isActive() {
+        return active;
+    }
 }

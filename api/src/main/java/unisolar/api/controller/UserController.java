@@ -46,7 +46,6 @@ public class UserController {
             throw new ExceptionValidation("Email already exists.");
         }
 
-
         String encodedPassword = passwordEncoder.encode(data.password());
 
         var user = new User(data);
@@ -60,36 +59,39 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateUser(@RequestBody @Valid UserUpdateDTO data) {
-        var user = repository.getReferenceById(data.id());
+    public ResponseEntity<UserDetailDTO> updateUser(@RequestBody @Valid UserUpdateDTO data) {
+        var user = repository.findById(data.id())
+                .filter(User::isActive)
+                .orElseThrow(() -> new ExceptionValidation("User not found or inactive"));
+
         user.updateInformations(data);
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deactivateUser(@PathVariable Long id) {
-        var user = repository.getReferenceById(id);
+    public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
+        var user = repository.findById(id)
+                .filter(User::isActive)
+                .orElseThrow(() -> new ExceptionValidation("User not found or already inactive"));
+
         user.deactivate();
-        return ResponseEntity.noContent().build();
+        repository.save(user);
+        return ResponseEntity.ok("User deactivated successfully");
     }
 
     @PutMapping("/{id}/change-password")
     public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody @Valid ChangePasswordDTO changePasswordDTO) {
-        Optional<User> optionalUser = repository.findById(id);
+        var user = repository.findById(id)
+                .filter(User::isActive)
+                .orElseThrow(() -> new ExceptionValidation("User not found or inactive"));
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            if (passwordEncoder.matches(changePasswordDTO.oldPassword(), user.getPassword())) {
-                user.setPassword(passwordEncoder.encode(changePasswordDTO.newPassword()));
-                repository.save(user);
-                return ResponseEntity.ok("Password changed successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Old password incorrect");
-            }
+        if (passwordEncoder.matches(changePasswordDTO.oldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(changePasswordDTO.newPassword()));
+            repository.save(user);
+            return ResponseEntity.ok("Password changed successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Old password incorrect");
         }
     }
 
@@ -97,17 +99,12 @@ public class UserController {
     public ResponseEntity<UserDetailDTO> getCurrentUser(Authentication authentication) {
         String username = authentication.getName();
 
-        UserDetails userDetails = repository.findByUsername(username);
+        User user = (User) repository.findByUsername(username);
 
-        if (userDetails == null) {
+        if (user == null || !user.isActive()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        User user = (User) userDetails;
-
-        UserDetailDTO userDetailDTO = new UserDetailDTO(user);
-
-        return ResponseEntity.ok(userDetailDTO);
+        return ResponseEntity.ok(new UserDetailDTO(user));
     }
-
 }
