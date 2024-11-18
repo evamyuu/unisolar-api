@@ -9,9 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import unisolar.api.controller.UserController;
 import unisolar.api.domain.dto.userDTO.*;
+import unisolar.api.domain.entity.*;
 import unisolar.api.service.ChatbotService;
+import unisolar.api.service.MaintenanceService;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @Component
@@ -21,6 +26,9 @@ public class UniSolarCLI implements CommandLineRunner {
     private final UserController userController;
     private final ChatbotService chatbotService;
     private Authentication currentAuthentication;
+    private MaintenanceService maintenanceService;
+
+
     private final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public UniSolarCLI(AuthenticationManager authenticationManager,
@@ -53,24 +61,32 @@ public class UniSolarCLI implements CommandLineRunner {
         System.out.println("\n=========== UniSolar 🌞 =============");
         System.out.println("      Energia que transforma vidas      ");
         System.out.println("=====================================");
-        System.out.println("1. Login 🔑");
-        System.out.println("2. Cadastro 📝");
-        System.out.print("Escolha uma opção: ");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        int choice = -1;
+        while (choice != 1 && choice != 2) {
+            System.out.println("1. Login 🔑");
+            System.out.println("2. Cadastro 📝");
+            System.out.print("Escolha uma opção: ");
 
-        switch (choice) {
-            case 1:
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+            } else {
+                scanner.nextLine(); // consume invalid input
+                choice = -1; // invalid choice
+            }
+
+            if (choice == 1) {
                 doLogin();
-                break;
-            case 2:
+            } else if (choice == 2) {
                 doRegister();
-                break;
-            default:
+            } else {
                 System.out.println("\n[Erro ❌] Opção inválida! Tente novamente.");
+            }
+
         }
     }
+
 
     private boolean showMainMenu() {
         System.out.println("\n=========== Menu Principal ===========");
@@ -147,17 +163,176 @@ public class UniSolarCLI implements CommandLineRunner {
 
     private void showDashboard() {
         System.out.println("\n=========== Dashboard 📊 ===========");
+
+        // Retrieve current user and installation data
         ResponseEntity<UserDetailDTO> userResponse = userController.getCurrentUser(currentAuthentication);
         if (userResponse.getStatusCode().is2xxSuccessful() && userResponse.getBody() != null) {
             UserDetailDTO user = userResponse.getBody();
             System.out.println("Bem-vindo, " + user.name() + "!");
 
-            mostrarStatus();
-            mostrarEconomia();
-            mostrarDicas();
+            // Fetch installation details including energy consumption, battery, and solar panel data
+            Installation installation = getInstallationDetails(user.id());
+
+            if (installation != null) {
+                // Main dashboard menu
+                int option;
+                do {
+                    System.out.println("\nEscolha uma opção:");
+                    System.out.println("1. Status do Sistema");
+                    System.out.println("2. Economia");
+                    System.out.println("3. Previsão de Energia");
+                    System.out.println("4. Manutenção");
+                    System.out.println("5. O Que a SolarIA Planejou para Você Hoje");
+                    System.out.println("6. Dicas para Economia de Energia");
+                    System.out.println("7. Voltar");
+
+                    option = scanner.nextInt();
+
+                    switch (option) {
+                        case 1:
+                            mostrarStatus(installation);
+                            break;
+                        case 2:
+                            mostrarEconomia(installation);
+                            break;
+                        case 3:
+                            mostrarPrevisaoEnergia(installation);
+                            break;
+                        case 4:
+                            mostrarManutencao(installation);
+                            break;
+                        case 5:
+                            mostrarDecisoesDaIA(installation);
+                            break;
+                        case 6:
+                            mostrarDicas();
+                            break;
+                        case 7:
+                            System.out.println("Voltando ao menu principal...");
+                            break;
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                    }
+
+                } while (option != 7);
+            }
         }
         System.out.println("\nPressione ENTER para voltar ao menu principal...");
         scanner.nextLine();
+    }
+
+    private void mostrarDecisoesDaIA(Installation installation) {
+        if (installation != null) {
+            System.out.println("\n=== O Que a SolarIA planejou para você hoje? ===");
+
+            // Definir os dados para a simulação
+            double solarGenerationMorning = 100.0 + (Math.random() * 50.0);  // Geração solar maior pela manhã
+            double batteryChargeMorning = 100.0;  // A bateria carrega para 100% durante o dia
+            double batteryUsageMorning = solarGenerationMorning * 0.5;  // Usa 50% da geração solar para carregar a bateria
+            double solarGenerationAfternoon = 50.0 + (Math.random() * 30.0);  // Geração solar menor devido às nuvens
+            double batteryConsumptionNight = 20.0 + (Math.random() * 10.0);  // A bateria é utilizada para carregar os aparelhos essenciais
+            double batteryDischargeAmount = 0.2 + (Math.random() * 0.3) * 100;  // Descarregar a bateria durante horários de pico (tarifa mais alta)
+
+            // IA decide as ações
+            System.out.println("\n🌅 Manhã Ensolarada:");
+            System.out.println("Geração Solar: " + df.format(solarGenerationMorning) + " kWh");
+            System.out.println("Bateria Carregada: " + df.format(batteryUsageMorning) + " kWh");
+            if (batteryChargeMorning > 90) {
+                System.out.println("💡 Decisão da IA: Usar energia solar ao máximo pela manhã.");
+            } else {
+                System.out.println("💡 Decisão da IA: Priorizar o uso da bateria para garantir energia à noite.");
+            }
+
+            System.out.println("\n🌥️ Tarde Nublada:");
+            System.out.println("Geração Solar: " + df.format(solarGenerationAfternoon) + " kWh");
+            if (solarGenerationAfternoon < 60) {
+                System.out.println("💡 Decisão da IA: Usar energia solar sem utilizar a bateria.");
+            } else {
+                System.out.println("💡 Decisão da IA: Reduzir o uso da bateria para preservar energia para a noite.");
+            }
+
+            System.out.println("\n🌙 Noite:");
+            System.out.println("Consumo da Bateria: " + df.format(batteryConsumptionNight) + " kWh 🔋");
+            if (batteryConsumptionNight > 20) {
+                System.out.println("💡 Decisão da IA: Aumentar a utilização da bateria para garantir energia durante a noite.");
+            } else {
+                System.out.println("💡 Decisão da IA: Otimizar o consumo de energia para evitar descarregar a bateria demais.");
+            }
+
+            System.out.println("\n🌞 Dia Seguinte com Tarifas Mais Altas:");
+            System.out.println("Descarregamento da Bateria: " + df.format(batteryDischargeAmount) + "%");
+            double savingsFromBatteryDischarge = batteryDischargeAmount * 0.75;  // Suposição de economia de 75%
+            System.out.println("💡 Decisão da IA: Descarregar mais bateria durante horários de pico para economizar com tarifas altas.");
+            System.out.println("Economia Estimada: R$ " + df.format(savingsFromBatteryDischarge) + " 💰");
+        }
+    }
+
+    private Installation getInstallationDetails(Long userId) {
+        // Assuming there is a method to retrieve the installation based on the user ID
+        ResponseEntity<Installation> installationResponse = userController.getUserInstallation(userId);
+        if (installationResponse.getStatusCode().is2xxSuccessful() && installationResponse.getBody() != null) {
+            return installationResponse.getBody();
+        } else {
+            System.out.println("\n[Erro ❌] Não foi possível carregar os dados de instalação.");
+            return null;
+        }
+    }
+
+    private void mostrarStatus(Installation installation) {
+        if (installation != null) {
+            System.out.println("\n=== Status do Sistema ===");
+
+            // Fonte de energia
+            boolean usandoEnergiaSolar = installation.getSolarPanels().size() > 0; // Verifica se há painéis solares
+            System.out.println("\nFonte de Energia Atual: " + (usandoEnergiaSolar ? "Solar ☀️" : "Rede Elétrica ⚡"));
+
+            // Bateria
+            Battery battery = installation.getBattery();
+            int batteryCharge = battery != null ? (int) battery.getCurrentCharge() : 0;
+            String statusBateria = batteryCharge > 50 ? "Carregada 👍" : "Baixa ⚠️";
+            String batteryStatus = battery != null ? battery.getHealth() : "Desconhecido ❓";
+
+            System.out.println("\nBateria:");
+            System.out.println("Nível: " + batteryCharge + "% " + gerarBarraProgresso(batteryCharge));
+            System.out.println("Status: " + statusBateria + " (" + batteryStatus + ")");
+
+            // Painéis solares
+            List<SolarPanel> panels = installation.getSolarPanels();
+            String statusPaineis = panels.isEmpty() ? "Sem Painéis 🚫" : "Operacional 🌞";
+            System.out.println("\nPainéis Solares:");
+            for (SolarPanel panel : panels) {
+                String panelStatus = panel.getStatus();
+                System.out.println("Painel Solar " + panel.getId() + ": " + panelStatus);
+            }
+            System.out.println("Status: " + statusPaineis);
+        }
+    }
+
+    private void mostrarEconomia(Installation installation) {
+        if (installation != null) {
+            System.out.println("\n=== Economia ===");
+
+            // Simulando consumos de energia (valores aleatórios)
+            double totalSolarConsumption = Math.random() * 50 + 20;  // Consumo solar entre 20 e 70 kWh
+            double totalGridConsumption = Math.random() * 50 + 10;   // Consumo da rede entre 10 e 60 kWh
+            double totalBatteryConsumption = Math.random() * 30 + 5;  // Consumo de bateria entre 5 e 35 kWh
+
+            // Simulando a economia com base no consumo solar
+            double totalConsumption = totalSolarConsumption + totalGridConsumption + totalBatteryConsumption;
+            double economiaHoje = totalSolarConsumption * 0.25; // Exemplo de economia (ajuste conforme necessário)
+            double economiaMes = totalSolarConsumption * 7.5;   // Exemplo de economia mensal (ajuste conforme necessário)
+            double projecaoAnual = economiaMes * 12;             // Projeção anual
+
+            // Exibindo dados de consumo de energia e economia simulada
+            System.out.println("Consumo Total: " + df.format(totalConsumption) + " kWh");
+            System.out.println("Consumo Solar: " + df.format(totalSolarConsumption) + " kWh 🌞");
+            System.out.println("Consumo da Rede: " + df.format(totalGridConsumption) + " kWh ⚡");
+            System.out.println("Consumo da Bateria: " + df.format(totalBatteryConsumption) + " kWh 🔋");
+
+            System.out.println("\nEconomia Hoje: R$ " + df.format(economiaHoje) + " 💰");
+            System.out.println("Economia do Mês: R$ " + df.format(economiaMes) + " 💵");
+            System.out.println("Projeção Anual: R$ " + df.format(projecaoAnual) + " 📊");
+        }
     }
 
     private void showUserProfile() {
@@ -267,23 +442,6 @@ public class UniSolarCLI implements CommandLineRunner {
         }
     }
 
-
-    private void mostrarStatus() {
-        System.out.println("\n=== Status do Sistema ===");
-
-        boolean usandoEnergiaSolar = true;
-        int nivelBateria = 75;
-        String statusBateria = nivelBateria > 50 ? "Carregada 👍" : "Baixa ⚠️";
-        String statusPaineis = "Operacional 🌞";
-
-        System.out.println("\nFonte de Energia Atual: " + (usandoEnergiaSolar ? "Solar ☀" : "Rede Elétrica ⚡"));
-        System.out.println("\nBateria:");
-        System.out.println("Nível: " + nivelBateria + "% " + gerarBarraProgresso(nivelBateria));
-        System.out.println("Status: " + statusBateria);
-        System.out.println("\nPainéis Solares:");
-        System.out.println("Status: " + statusPaineis);
-    }
-
     private String gerarBarraProgresso(int porcentagem) {
         int barSize = 20;
         int preenchido = (int) ((porcentagem / 100.0) * barSize);
@@ -296,27 +454,90 @@ public class UniSolarCLI implements CommandLineRunner {
         return barra.toString();
     }
 
-    private void mostrarEconomia() {
-        System.out.println("\n=== Economia ===");
-        double economiaHoje = 5.25;
-        double economiaMes = 150.00;
-        double projecaoAnual = economiaMes * 12;
+    private void mostrarManutencao(Installation installation) {
+        if (installation != null) {
+            System.out.println("\n=== Manutenção do Sistema ===");
 
-        System.out.println("Economia Hoje: R$ " + df.format(economiaHoje));
-        System.out.println("Economia do Mês: R$ " + df.format(economiaMes));
-        System.out.println("Projeção Anual: R$ " + df.format(projecaoAnual));
+            Random rand = new Random();
+
+            // Manutenção dos painéis solares
+            for (SolarPanel panel : installation.getSolarPanels()) {
+                int panelAge = rand.nextInt(10) + 1;  // Idade do painel (em anos)
+                double efficiency = rand.nextDouble() * 100;  // Eficiência atual do painel
+                boolean needMaintenance = efficiency < 85 || panelAge > 5 || rand.nextDouble() < 0.2;  // Condições de manutenção
+
+                System.out.println("Painel Solar " + panel.getId() + " (Idade: " + panelAge + " anos, Eficiência: " + df.format(efficiency) + "%):");
+                if (needMaintenance) {
+                    System.out.println("    ⚠️ Precisa de manutenção (Eficiência baixa ou desgaste excessivo).");
+                } else {
+                    System.out.println("    👍 Em bom estado.");
+                }
+            }
+
+            // Manutenção das baterias
+            Battery battery = installation.getBattery();
+            if (battery != null) {
+                int batteryAge = rand.nextInt(10) + 1;  // Idade da bateria (em anos)
+                double batteryHealth = rand.nextDouble() * 100;  // Estado de saúde da bateria
+                boolean needsMaintenance = batteryHealth < 75 || batteryAge > 5 || rand.nextDouble() < 0.15;  // Condições de manutenção
+
+                System.out.println("\nBateria (Idade: " + batteryAge + " anos, Saúde: " + df.format(batteryHealth) + "%):");
+                if (needsMaintenance) {
+                    System.out.println("    ⚠️ A bateria precisa de manutenção (Desgaste ou saúde comprometida).");
+                } else {
+                    System.out.println("    👍 Bateria em bom estado.");
+                }
+            }
+        }
     }
+
 
     private void mostrarDicas() {
-        System.out.println("\n=== Dicas de Hoje ===");
-        System.out.println("1. Horários de Uso: Melhor horário para usar eletrodomésticos: após às 20h");
-        System.out.println("2. Aproveitamento Solar: Dia ensolarado! Use aparelhos agora.");
-        System.out.println("3. Economia de Energia: Desligue aparelhos não usados.");
+        System.out.println("\n=== Dicas para Economia de Energia ===");
+        System.out.println("1. Aproveite ao máximo a energia solar durante o dia.");
+        System.out.println("2. Evite picos de consumo de energia, distribuindo o uso de aparelhos ao longo do dia.");
+        System.out.println("3. Realize a manutenção regular dos seus painéis solares para garantir alta eficiência.");
+        System.out.println("4. Considere melhorar a eficiência energética da sua casa com melhores eletrodomésticos.");
     }
+
+    private void mostrarPrevisaoEnergia(Installation installation) {
+        if (installation != null) {
+            System.out.println("\n=== Previsão de Energia ===");
+
+            Random rand = new Random();
+
+            // Simulando a previsão de geração solar e consumo considerando variabilidade climática
+            double geraSolarDia = rand.nextDouble() * 30 + 20;  // Geração solar por hora (kWh), com variação climática
+            double consomeEnergia = rand.nextDouble() * 20 + 10;  // Consumo de energia por hora (kWh), variando de acordo com o uso
+
+            // Estimando a produção e consumo para as próximas 24 horas
+            double totalSolarGenerated = geraSolarDia * 24;  // Geração solar nas próximas 24 horas
+            double totalEnergyConsumed = consomeEnergia * 24;  // Consumo de energia nas próximas 24 horas
+
+            // Economia estimada usando energia solar
+            double economiaEsperada = (totalSolarGenerated - totalEnergyConsumed) > 0
+                    ? (totalSolarGenerated - totalEnergyConsumed)
+                    : 0;  // Economia se houver geração suficiente
+
+            System.out.println("Previsão de energia gerada nas próximas 24 horas: " + df.format(totalSolarGenerated) + " kWh");
+            System.out.println("Previsão de energia consumida nas próximas 24 horas: " + df.format(totalEnergyConsumed) + " kWh");
+            System.out.println("Economia esperada (se você usar energia solar ao invés de rede elétrica): " + df.format(economiaEsperada) + " kWh");
+
+            // Condições climáticas e variabilidade
+            String weatherCondition = rand.nextDouble() < 0.5 ? "Ensolarado ☀️" : "Nublado ☁️";
+            System.out.println("Condição climática prevista: " + weatherCondition);
+
+            if ("Nublado ☁️".equals(weatherCondition)) {
+                System.out.println("    ⛅ Geração solar será reduzida em 30% devido ao clima nublado.");
+                totalSolarGenerated *= 0.7;  // Ajusta a geração solar
+            }
+        }
+    }
+
 
     private void startChat() {
         System.out.println("\n=========== Chat com SolarIA 🤖 ===========");
-        System.out.println("☀️ Olá, sou a SolarIA, assistente virtual da Unisolar! 🌱 Como posso ajudar? 💡");
+        System.out.println("SolarIA: ☀️ Olá, sou a SolarIA, assistente virtual da Unisolar! 🌱 Como posso ajudar? 💡");
         System.out.println("Digite 'sair' para voltar ao menu principal");
 
         while (true) {
@@ -326,8 +547,97 @@ public class UniSolarCLI implements CommandLineRunner {
             if (question.equalsIgnoreCase("sair")) {
                 break;
             }
+            if (question.toLowerCase().contains("previsão") || question.toLowerCase().contains("economia")) {
+                simulateEnergyForecast();
+            } else if (question.toLowerCase().contains("impacto") || question.toLowerCase().contains("bateria")) {
+                simulateBatteryImpact();
+            } else if (question.toLowerCase().contains("mensal") || question.toLowerCase().contains("estimativa")) {
+                simulateMonthlyForecast();
+            }
+            // IA processa a pergunta e retorna uma previsão ou recomendação baseada em dados reais e simulações
             String response = chatbotService.answerQuestion(question);
             System.out.println("\nSolarIA: " + response);
         }
     }
+
+    private void simulateEnergyForecast() {
+        System.out.println("\nSolarIA: ☀️ Baseado nos dados de consumo e na previsão do tempo, aqui está sua previsão de economia:");
+
+        // Simulando a previsão de consumo com base em padrões históricos
+        double predictedSolarConsumption = 100.0 + (Math.random() * 50.0);  // Simulando aumento ou queda
+        double predictedGridConsumption = 50.0 + (Math.random() * 30.0);
+        double predictedBatteryConsumption = 20.0 + (Math.random() * 10.0);
+
+        double totalConsumption = predictedSolarConsumption + predictedGridConsumption + predictedBatteryConsumption;
+        double savingsToday = (predictedSolarConsumption - predictedGridConsumption) * 0.8;  // Suposição de economia com energia solar
+
+        System.out.println("\nPrevisão para hoje:");
+        System.out.println("Consumo Solar: " + df.format(predictedSolarConsumption) + " kWh");
+        System.out.println("Consumo da Rede Elétrica: " + df.format(predictedGridConsumption) + " kWh");
+        System.out.println("Consumo da Bateria: " + df.format(predictedBatteryConsumption) + " kWh");
+        System.out.println("Consumo Total: " + df.format(totalConsumption) + " kWh");
+        System.out.println("Economia estimada hoje: R$ " + df.format(savingsToday));
+
+        System.out.println("\nCom base no clima e padrões de uso, sua economia mensal pode aumentar em até 25% se utilizar mais energia solar durante o dia.");
+    }
+
+    private String getWeatherCondition() {
+        // Simulação do clima (pode ser substituído por dados reais de uma API)
+        String[] conditions = {"Ensolarado", "Nublado", "Chuvoso"};
+        int index = (int) (Math.random() * conditions.length);
+        return conditions[index];
+    }
+
+    private int getCurrentHour() {
+        // Simula a hora atual (de 0 a 23)
+        return (int) (Math.random() * 24);  // Simulando uma hora aleatória
+    }
+
+    private void simulateBatteryImpact() {
+        System.out.println("\nSolarIA: 🔋 Vamos simular o impacto do uso da bateria no seu consumo de energia:");
+
+        // Simulando o consumo diário de energia da bateria
+        double batteryDischargeRate = 0.1 + (Math.random() * 0.3);  // A taxa de descarregamento pode variar de 10% a 30% da carga da bateria
+        double batteryLevel = 1.0;  // Iniciamos a bateria cheia
+
+        // Simulando o impacto da descarga da bateria
+        double batteryUsageToday = batteryLevel * batteryDischargeRate;
+        double savingsFromBattery = batteryUsageToday * 0.75;  // Economia estimada ao usar a bateria
+
+        // Exibindo o impacto
+        System.out.println("Taxa de descarregamento da bateria hoje: " + df.format(batteryDischargeRate * 100) + "%");
+        System.out.println("Energia utilizada da bateria hoje: " + df.format(batteryUsageToday * 100) + "%");
+        System.out.println("Economia estimada ao usar a bateria: R$ " + df.format(savingsFromBattery) + " 💰");
+
+        // Ajustando o nível da bateria após o uso
+        batteryLevel -= batteryUsageToday;
+
+        System.out.println("\nNível da bateria após o uso: " + df.format(batteryLevel * 100) + "%");
+    }
+
+    private void simulateMonthlyForecast() {
+        System.out.println("\nSolarIA: 📊 Vamos simular a previsão mensal de consumo e economia.");
+
+        // Estimando o consumo e economia mensal com base no consumo diário
+        double dailySolarConsumption = 100.0 + (Math.random() * 50.0);  // Consumo solar diário simulado
+        double dailyGridConsumption = 50.0 + (Math.random() * 30.0);    // Consumo de rede diário simulado
+        double dailyBatteryConsumption = 20.0 + (Math.random() * 10.0);  // Consumo da bateria diário simulado
+
+        // Economias com energia solar (ajustado para o mês)
+        double dailySavings = (dailySolarConsumption - dailyGridConsumption) * 0.8;  // Economia diária
+        double monthlySavings = dailySavings * 30;  // Estimando economia mensal
+
+        // Estimativa de consumo total no mês
+        double monthlyTotalConsumption = (dailySolarConsumption + dailyGridConsumption + dailyBatteryConsumption) * 30;
+
+        // Exibindo a previsão mensal
+        System.out.println("Consumo Solar Mensal: " + df.format(dailySolarConsumption * 30) + " kWh 🌞");
+        System.out.println("Consumo da Rede Mensal: " + df.format(dailyGridConsumption * 30) + " kWh ⚡");
+        System.out.println("Consumo da Bateria Mensal: " + df.format(dailyBatteryConsumption * 30) + " kWh 🔋");
+        System.out.println("Consumo Total Mensal: " + df.format(monthlyTotalConsumption) + " kWh");
+
+        System.out.println("\nEconomia Mensal Estimada: R$ " + df.format(monthlySavings) + " 💵");
+    }
+
 }
+

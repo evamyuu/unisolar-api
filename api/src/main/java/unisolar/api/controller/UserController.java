@@ -15,10 +15,14 @@ import unisolar.api.domain.dto.userDTO.ChangePasswordDTO;
 import unisolar.api.domain.dto.userDTO.UserCreateDTO;
 import unisolar.api.domain.dto.userDTO.UserDetailDTO;
 import unisolar.api.domain.dto.userDTO.UserUpdateDTO;
+import unisolar.api.domain.entity.Battery;
+import unisolar.api.domain.entity.Installation;
+import unisolar.api.domain.entity.SolarPanel;
 import unisolar.api.domain.entity.User;
 import unisolar.api.domain.repository.UserRepository;
 import unisolar.api.infra.exception.ExceptionValidation;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -106,5 +110,33 @@ public class UserController {
         }
 
         return ResponseEntity.ok(new UserDetailDTO(user));
+    }
+
+    public ResponseEntity<Installation> getUserInstallation(Long userId) {
+        // Simulating a user retrieval from repository
+        User user = repository.findById(userId).orElse(null); // Assuming this would be a real DB call
+
+        if (user == null) {
+            return ResponseEntity.notFound().build(); // Return 404 if user not found
+        }
+
+        // Simulating installation data (this would typically come from a real database)
+        SolarPanel panel1 = new SolarPanel(1L, "Roof", 250.0, 1000.0, 0.8, "Operational", null);
+        SolarPanel panel2 = new SolarPanel(2L, "Garage", 240.0, 950.0, 0.75, "Operational", null);
+        Battery battery = new Battery(1L, 85.0, 100.0, 120, 25.0, "Good", "Operational", null);
+
+        Installation installation = new Installation(
+                1L, // Installation ID
+                user, // Associated User
+                Arrays.asList(panel1, panel2), // List of Solar Panels
+                battery, // Battery
+                null, // Timestamp of installation (null for simulation)
+                "Active", // Installation status
+                2000.0, // Total Power Generated (kWh)
+                800.0 // Total Energy Saved (kWh)
+        );
+
+        // Return the mock installation as a response entity
+        return ResponseEntity.ok(installation); // HTTP 200 with installation data
     }
 }
