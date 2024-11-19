@@ -95,7 +95,7 @@ public class UniSolarCLI implements CommandLineRunner {
 
 
     private boolean showMainMenu() {
-        System.out.println("\n=========== Menu Principal ===========");
+        System.out.println("\n=========== Home ===========");
         System.out.println("1. Buscar 🔎");
         System.out.println("2. Dashboard 📊");
         System.out.println("3. Perfil do Usuário 👤");
@@ -186,7 +186,7 @@ public class UniSolarCLI implements CommandLineRunner {
             if (installation != null) {
                 int option;
                 do {
-                    System.out.println("\nMenu Principal");
+                    System.out.println("\n=========== Menu Principal ===========");
                     System.out.println("═".repeat(45));
                     System.out.println("1️ - Status do Sistema 📡");
                     System.out.println("2️ - Economia 💰");
@@ -696,3 +696,24 @@ public class UniSolarCLI implements CommandLineRunner {
         return normalized.replaceAll("[^\\p{ASCII}]", "");
     }
 }
+
+/*
+    Substituir
+    private void startChat() {
+        System.out.println("\n=========== Chat com SolarIA 🤖 ===========");
+        System.out.println("SolarIA: ☀️ Olá, sou a SolarIA, assistente virtual da Unisolar! 🌱 Como posso ajudar? 💡");
+        System.out.println("Digite 'sair' para voltar ao menu principal");
+
+        while (true) {
+            System.out.print("\nVocê: ");
+            String question = scanner.nextLine();
+
+            if (question.equalsIgnoreCase("sair")) {
+                break;
+            }
+            String response = chatbotService.answerQuestion(question);
+            System.out.println("\nSolarIA: " + response);
+        }
+    }
+}
+ */
