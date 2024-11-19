@@ -2,12 +2,8 @@
 
 ## 🌍 Visão Geral
 
-Unisolar é um projeto inovador que visa otimizar o uso de energia renovável através de uma solução inteligente e acessível:
-
-- **Tecnologia Solar Inteligente**: Utiliza painéis solares e baterias de carros elétricos reutilizadas
-- **Sistema de IA**: Maximiza a eficiência no consumo e armazenamento de energia
-- **Inclusão Social**: Oferece uma alternativa mais barata e sustentável para pessoas de baixa renda
-- **Parceria Governamental**: Busca incentivos fiscais para empresas que apoiam a causa
+O projeto Unisolar visa otimizar o uso de energia renovável, utilizando painéis solares, baterias de carros elétricos reutilizadas e um sistema baseado em IA para maximizar a eficiência no consumo e armazenamento de energia.
+A solução oferece uma maneira inteligente de aproveitar a energia solar, proporcionando uma alternativa mais barata e sustentável para pessoas de baixa renda. Além disso, o projeto busca firmar parcerias com o governo, oferecendo benefícios fiscais para empresas que doem ou concedem descontos em prol dessa causa, contribuindo para a inclusão social e ambiental.
 
 ## 🛠 Pré-requisitos
 
@@ -31,43 +27,6 @@ server.error.include-stacktrace=never
 api.security.token.secret=${JWT_SECRET:12345678}
 
 ```
-
-## 🚀 Rodando a Aplicação Localmente
-
-### Passos de Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/evamyuu/unisolar-api
-   ```
-
-2. Instale as dependências:
-   ```bash
-   mvn clean install
-   ```
-
-3. Inicie o servidor:
-    - Encontre a classe `ApiApplication.java`
-    - Execute a classe no seu IDE (recomendado IntelliJ)
-
-## 🔐 Credenciais Padrão
-
-- **Usuário**: `user`
-- **Senha**: `password`
-
-# Unisolar 🌞 - Backend
-
-## 🌍 Visão Geral
-
-O projeto Unisolar visa otimizar o uso de energia renovável, utilizando painéis solares, baterias de carros elétricos reutilizadas e um sistema baseado em IA para maximizar a eficiência no consumo e armazenamento de energia. 
-A solução oferece uma maneira inteligente de aproveitar a energia solar, proporcionando uma alternativa mais barata e sustentável para pessoas de baixa renda. Além disso, o projeto busca firmar parcerias com o governo, oferecendo benefícios fiscais para empresas que doem ou concedem descontos em prol dessa causa, contribuindo para a inclusão social e ambiental.
-
-## 🛠 Pré-requisitos
-
-- Java 17 ou superior
-- Maven para gerenciamento de dependências
-- PostgreSQL como banco de dados
-
 ## 🔐 Configuração da SolarIA
 
 ### Opções de Configuração
@@ -96,6 +55,29 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 - Implementamos uma simulação local do funcionamento da IA
 - Caso a aplicação não detectar uma chave válida, as respostas serão geradas por um modelo de resposta simulado para perguntas comuns
 - **Objetivo**: Permitir que desenvolvedores e usuários testem o sistema completamente
+
+## 🚀 Rodando a Aplicação Localmente
+
+### Passos de Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/evamyuu/unisolar-api
+   ```
+
+2. Instale as dependências:
+   ```bash
+   mvn clean install
+   ```
+
+3. Inicie o servidor:
+    - Encontre a classe `ApiApplication.java`
+    - Execute a classe no seu IDE (recomendado IntelliJ)
+
+## 🔐 Credenciais Padrão
+
+- **Usuário**: `user`
+- **Senha**: `password`
 
 ## 🖥 Interface CLI
 
