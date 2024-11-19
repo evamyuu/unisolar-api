@@ -29,11 +29,6 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
     - Encontre a classe `ApiApplication.java`
     - Execute a classe no seu IDE (recomendado IntelliJ)
 
-## 🔐 Credenciais Padrão
-
-- **Usuário**: `user`
-- **Senha**: `password`
-
 ## 📦 Configuração do Banco de Dados
 
 1. Instale o PostgreSQL
@@ -79,6 +74,11 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 - Caso a aplicação não detectar uma chave válida, as respostas serão geradas por um modelo de resposta simulado para perguntas comuns
 - **Objetivo**: Permitir que desenvolvedores e usuários testem o sistema completamente
 
+## 🔐 Credenciais Padrão
+
+- **Usuário**: `user`
+- **Senha**: `password`
+  
 ## 🖥 Interface CLI
 
 ### Menu de Login
