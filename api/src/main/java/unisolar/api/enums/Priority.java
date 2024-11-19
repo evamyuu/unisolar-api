@@ -1,4 +1,4 @@
-package unisolar.api;
+package unisolar.api.enums;
 
 public enum Priority {
     HIGH,

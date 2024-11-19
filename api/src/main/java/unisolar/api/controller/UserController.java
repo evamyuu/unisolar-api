@@ -23,23 +23,33 @@ import unisolar.api.domain.repository.UserRepository;
 import unisolar.api.infra.exception.ExceptionValidation;
 
 import java.util.Arrays;
-import java.util.Optional;
 
+/**
+ * Controller responsible for managing user-related operations such as
+ * registration, updating user details, password changes, and retrieving user data.
+ */
 @RestController
 @RequestMapping("/user")
 @SecurityRequirement(name = "bearer-key")
 public class UserController {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository repository; // Repository for user persistence and retrieval.
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder; // Utility for encoding and verifying passwords.
 
+    /**
+     * Registers a new user in the system.
+     *
+     * @param data        the user data to be registered.
+     * @param uriBuilder  utility for building URIs for created resources.
+     * @return a ResponseEntity containing the created user's details.
+     */
     @PostMapping("/register")
     @Transactional
     public ResponseEntity<UserDetailDTO> createUser(@RequestBody @Valid UserCreateDTO data, UriComponentsBuilder uriBuilder) {
-
+        // Check for existing username or email.
         UserDetails existingUserByUsername = repository.findByUsername(data.username());
         if (existingUserByUsername != null) {
             throw new ExceptionValidation("Username already exists.");
@@ -50,17 +60,24 @@ public class UserController {
             throw new ExceptionValidation("Email already exists.");
         }
 
+        // Encode password and create user entity.
         String encodedPassword = passwordEncoder.encode(data.password());
-
         var user = new User(data);
         user.setPassword(encodedPassword);
 
-        repository.save(user);
+        repository.save(user); // Persist the user.
 
+        // Build URI for the created user and return the response.
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDetailDTO(user));
     }
 
+    /**
+     * Updates user information.
+     *
+     * @param data the updated user data.
+     * @return a ResponseEntity containing the updated user's details.
+     */
     @PutMapping
     @Transactional
     public ResponseEntity<UserDetailDTO> updateUser(@RequestBody @Valid UserUpdateDTO data) {
@@ -72,6 +89,12 @@ public class UserController {
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
+    /**
+     * Deactivates a user account.
+     *
+     * @param id the ID of the user to deactivate.
+     * @return a ResponseEntity with a success message.
+     */
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
@@ -84,6 +107,13 @@ public class UserController {
         return ResponseEntity.ok("User deactivated successfully");
     }
 
+    /**
+     * Changes the user's password.
+     *
+     * @param id               the ID of the user.
+     * @param changePasswordDTO the DTO containing the old and new passwords.
+     * @return a ResponseEntity with a success message or an error message if the old password is incorrect.
+     */
     @PutMapping("/{id}/change-password")
     public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody @Valid ChangePasswordDTO changePasswordDTO) {
         var user = repository.findById(id)
@@ -99,6 +129,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Retrieves the currently authenticated user's details.
+     *
+     * @param authentication the current authentication object.
+     * @return a ResponseEntity containing the authenticated user's details.
+     */
     @GetMapping("/me")
     public ResponseEntity<UserDetailDTO> getCurrentUser(Authentication authentication) {
         String username = authentication.getName();
@@ -112,31 +148,37 @@ public class UserController {
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
+    /**
+     * Retrieves a user's installation details (simulated for demonstration).
+     *
+     * @param userId the ID of the user whose installation details are to be retrieved.
+     * @return a ResponseEntity containing the installation details.
+     */
     public ResponseEntity<Installation> getUserInstallation(Long userId) {
-        // Simulating a user retrieval from repository
-        User user = repository.findById(userId).orElse(null); // Assuming this would be a real DB call
+        // Simulating user retrieval.
+        User user = repository.findById(userId).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.notFound().build(); // Return 404 if user not found
+            return ResponseEntity.notFound().build(); // Return 404 if user not found.
         }
 
-        // Simulating installation data (this would typically come from a real database)
+        // Simulating installation data.
         SolarPanel panel1 = new SolarPanel(1L, "Roof", 250.0, 1000.0, 0.8, "Operational", null);
         SolarPanel panel2 = new SolarPanel(2L, "Garage", 240.0, 950.0, 0.75, "Operational", null);
         Battery battery = new Battery(1L, 85.0, 100.0, 120, 25.0, "Good", "Operational", null);
 
         Installation installation = new Installation(
-                1L, // Installation ID
-                user, // Associated User
-                Arrays.asList(panel1, panel2), // List of Solar Panels
-                battery, // Battery
-                null, // Timestamp of installation (null for simulation)
-                "Active", // Installation status
-                2000.0, // Total Power Generated (kWh)
-                800.0 // Total Energy Saved (kWh)
+                1L,
+                user,
+                Arrays.asList(panel1, panel2),
+                battery,
+                null,
+                "Active",
+                2000.0,
+                800.0
         );
 
-        // Return the mock installation as a response entity
-        return ResponseEntity.ok(installation); // HTTP 200 with installation data
+        // Return the simulated installation data.
+        return ResponseEntity.ok(installation);
     }
 }

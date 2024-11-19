@@ -1,8 +1,8 @@
 @import url(reset.css);
 
 body {
-    background: #1A1A1A; /* Dark background for dark mode */
-    color: #D1D1D1; /* Light text for contrast */
+    background: #1A1A1A;
+    color: #D1D1D1;
     font-family: 'Roboto', sans-serif;
     display: flex;
     justify-content: center;
@@ -10,23 +10,23 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    position: relative; /* Ensure the SVG stays behind the content */
+    position: relative;
 }
 
 /* SVG container */
 .svg-container {
-    position: absolute; /* Places the SVG behind the content */
-    bottom: 0; /* Places the SVG at the bottom of the screen */
+    position: absolute;
+    bottom: 0;
     left: 0;
     width: 100%;
-    z-index: -1; /* Places the SVG behind other elements */
+    z-index: -1;
 }
 
 /* Main container */
 .container {
     width: 100%;
     max-width: 850px;
-    background-color: #2A2A2A; /* Darker container */
+    background-color: #2A2A2A;
     border-radius: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     padding: 20px;
@@ -47,20 +47,20 @@ body {
 .header h2 {
     margin: 0;
     font-size: 26px;
-    color: #FF710C; /* Sol Acolhedor - Main header color */
+    color: #FF710C;
     font-weight: 700;
 }
 
 .header__actions a {
     text-decoration: none;
-    color: #11E9C4; /* Verde Vida */
+    color: #11E9C4;
     font-weight: 500;
     font-size: 16px;
     transition: color 0.3s ease;
 }
 
 .header__actions a:hover {
-    color: #FF710C; /* Sol Acolhedor - Hover to highlight */
+    color: #FF710C;
 }
 
 /* Chat area */
@@ -71,7 +71,7 @@ body {
     gap: 1rem;
     overflow-y: auto;
     padding: 20px;
-    background-color: #333333; /* Darker background for the chat */
+    background-color: #333333;
     border-radius: 25px;
 }
 
@@ -87,14 +87,14 @@ body {
 
 /* Bot message bubble style */
 .chat__bubble--bot {
-    background-color: #FF710C; /* Sol Acolhedor */
+    background-color: #FF710C;
     color: white;
     text-align: left;
 }
 
 /* User message bubble style */
 .chat__bubble--user {
-    background-color: #11E9C4; /* Verde Vida */
+    background-color: #11E9C4;
     color: white;
     text-align: right;
     align-self: flex-end;
@@ -113,7 +113,7 @@ body {
     width: 100%;
     max-width: 700px;
     border-radius: 50px;
-    background-color: #444444; /* Dark background for input */
+    background-color: #444444;
     padding: 12px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
@@ -126,7 +126,7 @@ body {
     border-radius: 25px;
     background-color: transparent;
     font-size: 16px;
-    color: #D1D1D1; /* Light text for input */
+    color: #D1D1D1;
     outline: none;
     transition: background-color 0.3s ease;
 }
@@ -136,7 +136,7 @@ body {
 }
 
 .input__input:focus {
-    background-color: #555555; /* Focus with dark background */
+    background-color: #555555;
 }
 
 /* Send button */
@@ -146,14 +146,14 @@ body {
     justify-content: center;
     height: 50px;
     width: 50px;
-    background-color: #11E9C4; /* Verde Vida */
+    background-color: #11E9C4;
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .input__send:hover {
-    background-color: #0FBFA5; /* Softer Verde for hover */
+    background-color: #0FBFA5;
     transform: scale(1.1);
 }
 
@@ -177,7 +177,7 @@ body {
 .clear-conversation {
     margin-top: 15px;
     padding: 10px 20px;
-    background-color: #FF710C; /* Sol Acolhedor */
+    background-color: #FF710C;
     color: white;
     font-size: 14px;
     font-weight: bold;
@@ -188,6 +188,6 @@ body {
 }
 
 .clear-conversation:hover {
-    background-color: #FD8301; /* Lighter Sol Acolhedor shade for hover */
+    background-color: #FD8301;
     transform: scale(1.05);
 }

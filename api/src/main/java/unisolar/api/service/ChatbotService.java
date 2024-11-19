@@ -6,16 +6,34 @@ import unisolar.api.infra.openai.OpenAIClient;
 
 import java.util.List;
 
+/**
+ * ChatbotService is a service that interacts with the OpenAIClient to provide responses to user questions
+ * related to energy optimization using solar power. The service constructs a system prompt that guides
+ * the AI's responses and forwards the user's questions to the OpenAI API for an answer.
+ */
 @Service
 public class ChatbotService {
 
     private OpenAIClient client;
 
+    /**
+     * Constructor to initialize the ChatbotService with an OpenAIClient.
+     *
+     * @param client The OpenAIClient instance used to communicate with OpenAI's services.
+     */
     public ChatbotService(OpenAIClient client) {
         this.client = client;
     }
 
+    /**
+     * This method takes a user question, constructs a system prompt that defines the assistant's role
+     * and domain, and sends it to OpenAI to receive a response.
+     *
+     * @param question The question asked by the user.
+     * @return The response from the OpenAI chatbot based on the system prompt and user question.
+     */
     public String answerQuestion(String question) {
+        // System prompt that defines the chatbot's role, its purpose, and guardrails for behavior.
         String systemPrompt = "Você é o assistente virtual **SolarIA** da **Unisolar**, uma empresa que oferece soluções inteligentes para otimização de energia solar em residências. Sua missão é fornecer informações claras e educativas sobre como as pessoas podem aproveitar o melhor uso da energia solar, reduzir seus custos de energia e promover a sustentabilidade ambiental.\n\n" +
                 "A Unisolar oferece uma infraestrutura baseada em:\n" +
                 "1. **Painéis Solares**: Instalados em locais estratégicos para máxima captura de energia solar.\n" +
@@ -39,16 +57,25 @@ public class ChatbotService {
                 "Lembre-se: Seu papel é ser um assistente educativo e proativo, ajudando os usuários a entender como otimizar seu consumo energético de forma eficiente e sustentável.\n\n" +
                 "Agora, como posso te ajudar com sua energia solar?";
 
-        // Criar dados da requisição para enviar ao OpenAI
+        // Create a ChatCompletionRequestData instance with the system prompt and user question
         var data = new ChatCompletionRequestData(systemPrompt, question);
 
+        // Send the request to the OpenAI client and return the response
         return client.sendChatCompletionRequest(data);
     }
 
+    /**
+     * Loads the chat history by retrieving past interactions from the OpenAI service.
+     *
+     * @return A list of previous chat messages.
+     */
     public List<String> loadChatHistory() {
         return client.loadChatHistory();
     }
 
+    /**
+     * Clears the chat history by deleting the current conversation thread from the OpenAI service.
+     */
     public void clearChatHistory() {
         client.deleteThread();
     }

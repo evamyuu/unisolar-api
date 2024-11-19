@@ -16,6 +16,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * OpenAIClient is a component responsible for interacting with the OpenAI API.
+ * It manages sending chat completion requests, retrieving chat history, and handling threads.
+ * The client maintains an API key and an assistant ID, and supports communication with OpenAI's models via the OpenAiService.
+ */
 @Component
 public class OpenAIClient {
 
@@ -24,12 +29,25 @@ public class OpenAIClient {
     private String threadId;
     private final OpenAiService service;
 
+    /**
+     * Constructs an OpenAIClient instance with the provided API key and assistant ID.
+     *
+     * @param apiKey The API key for authentication with the OpenAI API.
+     * @param assistantId The assistant ID used for interacting with a specific assistant model.
+     */
     public OpenAIClient(@Value("${app.openai.api.key}") String apiKey, @Value("${app.openai.assistant.id}") String assistantId) {
         this.apiKey = apiKey;
         this.service = new OpenAiService(apiKey, Duration.ofSeconds(60));
         this.assistantId = assistantId;
     }
 
+    /**
+     * Sends a chat completion request to OpenAI, either creating a new thread or continuing an existing one.
+     * It processes the user's prompt and returns the assistant's response.
+     *
+     * @param data The data containing system and user prompts to send to the OpenAI API.
+     * @return The response from the assistant as a String.
+     */
     public String sendChatCompletionRequest(ChatCompletionRequestData data) {
         var messageRequest = MessageRequest
                 .builder()
@@ -49,11 +67,11 @@ public class OpenAIClient {
             service.createMessage(this.threadId, messageRequest);
         }
 
-        // Modificar aqui para incluir o modelo
+        // Create run request with the assistant ID and model
         var runRequest = RunCreateRequest
                 .builder()
                 .assistantId(assistantId)
-                .model("gpt-3.5-turbo") // Defina o modelo desejado
+                .model("gpt-3.5-turbo") // Set the desired model
                 .build();
         var run = service.createRun(threadId, runRequest);
 
@@ -70,6 +88,7 @@ public class OpenAIClient {
             throw new RuntimeException(e);
         }
 
+        // Retrieve and return the latest response from the assistant
         var messages = service.listMessages(threadId);
         return messages
                 .getData()
@@ -79,6 +98,12 @@ public class OpenAIClient {
                 .replaceAll("\\\u3010.*?\\\u3011", "");
     }
 
+    /**
+     * Loads the chat history for the current thread.
+     * If a thread exists, it returns all messages in the thread, sorted by timestamp.
+     *
+     * @return A list of message strings representing the chat history.
+     */
     public List<String> loadChatHistory() {
         var messages = new ArrayList<String>();
 
@@ -97,6 +122,9 @@ public class OpenAIClient {
         return messages;
     }
 
+    /**
+     * Deletes the current thread, if it exists, and clears the thread ID.
+     */
     public void deleteThread() {
         if (this.threadId != null) {
             service.deleteThread(this.threadId);
