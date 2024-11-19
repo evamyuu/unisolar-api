@@ -11,6 +11,29 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
 - Maven para gerenciamento de dependências
 - PostgreSQL como banco de dados
 
+## 🚀 Rodando a Aplicação Localmente
+
+### Passos de Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/evamyuu/unisolar-api
+   ```
+
+2. Instale as dependências:
+   ```bash
+   mvn clean install
+   ```
+
+3. Inicie o servidor:
+    - Encontre a classe `ApiApplication.java`
+    - Execute a classe no seu IDE (recomendado IntelliJ)
+
+## 🔐 Credenciais Padrão
+
+- **Usuário**: `user`
+- **Senha**: `password`
+
 ## 📦 Configuração do Banco de Dados
 
 1. Instale o PostgreSQL
@@ -56,29 +79,6 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 - Caso a aplicação não detectar uma chave válida, as respostas serão geradas por um modelo de resposta simulado para perguntas comuns
 - **Objetivo**: Permitir que desenvolvedores e usuários testem o sistema completamente
 
-## 🚀 Rodando a Aplicação Localmente
-
-### Passos de Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/evamyuu/unisolar-api
-   ```
-
-2. Instale as dependências:
-   ```bash
-   mvn clean install
-   ```
-
-3. Inicie o servidor:
-    - Encontre a classe `ApiApplication.java`
-    - Execute a classe no seu IDE (recomendado IntelliJ)
-
-## 🔐 Credenciais Padrão
-
-- **Usuário**: `user`
-- **Senha**: `password`
-
 ## 🖥 Interface CLI
 
 ### Menu de Login
@@ -92,7 +92,6 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 4. 🤖 Chat com SolarIA
 5. 🔒 Alterar Senha
 6. 🚶‍♂️ Logout
-
 ## 📚 Documentação da API
 
 Acesse a documentação Swagger em:
