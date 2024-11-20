@@ -603,10 +603,10 @@ public class UnisolarCLI implements CommandLineRunner {
         ResponseEntity<UserDetailDTO> userResponse = userController.getCurrentUser(currentAuthentication);
         UserDetailDTO user = userResponse.getBody();
 
-        respostas.put("olá", "Olá " + user.name() + "! 👋 Como posso ajudar você hoje? Estou aqui para responder suas dúvidas sobre energia solar e mostrar como você está economizando! ☀️");
-        respostas.put("bom dia", "Bom dia " + user.name() + "! ☀️ O dia está perfeito para energia solar! Sua geração já está 15% acima da média. Posso ajudar com algo específico?");
-        respostas.put("boa tarde", "Boa tarde " + user.name() + "! 🌤️ Seus painéis estão funcionando a todo vapor, já geraram 12.5 kWh hoje! Como posso ajudar?");
-        respostas.put("boa noite", "Boa noite " + user.name() + "! 🌙 Sua bateria está com 90% de carga, perfeita para o consumo noturno. Precisa de alguma informação?");
+        respostas.put("olá", "Olá, " + user.name() + "! 👋 Como posso ajudar você hoje? Estou aqui para responder suas dúvidas sobre energia solar e mostrar como você está economizando! ☀️");
+        respostas.put("bom dia", "Bom dia, " + user.name() + "! ☀️ O dia está perfeito para energia solar! Sua geração já está 15% acima da média. Posso ajudar com algo específico?");
+        respostas.put("boa tarde", "Boa tarde, " + user.name() + "! 🌤️ Seus painéis estão funcionando a todo vapor, já geraram 12.5 kWh hoje! Como posso ajudar?");
+        respostas.put("boa noite", "Boa noite, " + user.name() + "! 🌙 Sua bateria está com 90% de carga, perfeita para o consumo noturno. Precisa de alguma informação?");
         respostas.put("como funciona a solaria", "🤖 Eu sou a SolarIA, a inteligência artificial por trás do sistema de energia solar da UniSolar! \nEu trabalho de forma integrada para otimizar o uso da energia solar em sua residência. Aqui está como eu funciono:\n\n1. **Painéis Solares**: Eu monitoro os painéis solares instalados no seu telhado ou outro local estratégico, capturando a energia solar durante o dia.\n2. **Bateria de Carro Elétrico Reutilizada**: Eu também gerencio a bateria que armazena a energia solar gerada para uso posterior, como à noite ou em dias nublados.\n3. **Minha Inteligência Artificial**: Eu analiso os dados em tempo real, como previsão do tempo, tarifas de energia e o consumo diário, para otimizar a utilização da energia solar e das baterias.");
 
         respostas.put("como está meu sistema agora", String.format("📊 Status atual (%s):\nGeração Solar: 2.8 kWh/h\nCarga da Bateria: 85%%\nConsumo Atual: 1.2 kWh\nEconomia Hoje: R$ 15,40",
