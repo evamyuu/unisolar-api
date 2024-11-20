@@ -7,7 +7,7 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
 
 ## 🛠 Pré-requisitos
 
-- Java 17 ou superior
+- Java 17
 - Maven para gerenciamento de dependências
 - PostgreSQL como banco de dados
 
