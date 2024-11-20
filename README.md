@@ -19,13 +19,19 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
    ```bash
    git clone https://github.com/evamyuu/unisolar-api
    ```
+   
+2. Certifique-se de que o Maven está instalado executando o comando abaixo no terminal:
+   ```bash
+   mvn -v
+   ```
 
-2. Instale as dependências:
+3. Abra o terminal na raiz do projeto (diretório onde o arquivo `pom.xml` está localizado) e execute:
    ```bash
    mvn clean install
    ```
+   Isso irá baixar todas as dependências necessárias para o projeto.
 
-3. Após configurar o banco de dados e a SolarIA, siga os passos abaixo para iniciar o servidor:
+4. Após configurar o banco de dados e a SolarIA, siga os passos abaixo para iniciar o servidor:
    
 - Localize a classe `ApiApplication.java` no seguinte caminho:
     src/main/java/unisolar/api/ApiApplication.java
