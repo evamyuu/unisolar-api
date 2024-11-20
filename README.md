@@ -61,7 +61,7 @@ app.openai.api.key=SUA_CHAVE_OPENAI
 app.openai.assistant.id=asst_npBEXmBi86X176hjRqpwToby
 ```
 **Observação**:
-A chave OpenAI configurada no nosso arquivo `application.properties` é apenas um exemplo e não é válida.
+A chave OpenAI configurada no nosso arquivo `application.properties` é apenas um exemplo e **não é válida**.
 
 **Notas de Segurança**:
 - **NUNCA** compartilhe sua chave de API publicamente
