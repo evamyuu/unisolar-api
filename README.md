@@ -25,8 +25,10 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
    mvn clean install
    ```
 
-3. Inicie o servidor:
-    - Encontre a classe `ApiApplication.java`
+3. Após configurar o banco de dados e a SolarIA, inicie o servidor:
+   
+    - Encontre a classe ApiApplication.java no seguinte caminho:
+      src/main/java/unisolar/api/ApiApplication.java
     - Execute a classe no seu IDE (recomendado IntelliJ)
 
 ## 📦 Configuração do Banco de Dados
@@ -77,6 +79,8 @@ A chave OpenAI configurada no nosso arquivo `application.properties` é apenas u
 - **Objetivo**: Permitir que desenvolvedores e usuários testem o sistema completamente
 
 ## 🔐 Credenciais Padrão
+
+Após iniciar o servidor, será gerado automaticamente um usuário padrão. Utilize as credenciais abaixo para realizar o login ou, se preferir, crie um novo cadastro.
 
 - **Usuário**: `user`
 - **Senha**: `password`
