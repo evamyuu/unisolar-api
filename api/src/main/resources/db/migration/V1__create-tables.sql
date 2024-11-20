@@ -1,5 +1,6 @@
+-- Criação da tabela de usuários
 CREATE TABLE users (
-    id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     username character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
     name character varying(255),
@@ -9,6 +10,7 @@ CREATE TABLE users (
     active boolean DEFAULT true NOT NULL
 );
 
+-- Criação da tabela de instalações
 CREATE TABLE installations (
     id SERIAL PRIMARY KEY,
     user_id BIGINT,
@@ -19,7 +21,8 @@ CREATE TABLE installations (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-	CREATE TABLE weather_data (
+-- Criação da tabela de dados meteorológicos
+CREATE TABLE weather_data (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMP NOT NULL,
     condition VARCHAR(255) NOT NULL,
@@ -28,7 +31,8 @@ CREATE TABLE installations (
     solar_irradiance DOUBLE PRECISION NOT NULL
 );
 
-	CREATE TABLE solar_panels (
+-- Criação da tabela de painéis solares
+CREATE TABLE solar_panels (
     id SERIAL PRIMARY KEY,
     location VARCHAR(255) NOT NULL,
     current_power_generation DOUBLE PRECISION NOT NULL,
@@ -39,7 +43,7 @@ CREATE TABLE installations (
     FOREIGN KEY (installation_id) REFERENCES installations(id)
 );
 
-
+-- Criação da tabela de baterias
 CREATE TABLE batteries (
     id SERIAL PRIMARY KEY,
     current_charge DOUBLE PRECISION NOT NULL,
@@ -51,6 +55,8 @@ CREATE TABLE batteries (
     installation_id BIGINT,
     FOREIGN KEY (installation_id) REFERENCES installations(id)
 );
+
+-- Criação da tabela de consumo de energia
 CREATE TABLE energy_consumption (
     id SERIAL PRIMARY KEY,
     installation_id BIGINT,
