@@ -7,7 +7,7 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
 
 ## 🛠 Pré-requisitos
 
-- **Java 17**: [Instalar Java 17](https://adoptopenjdk.net/](https://www.oracle.com/br/java/technologies/downloads/))
+- **Java 17**: [Instalar Java 17](https://www.oracle.com/br/java/technologies/downloads/)
 - **Maven** (versão 3.6 ou superior): [Instalar Maven](https://maven.apache.org/install.html)
 - **PostgreSQL** (versão 12 ou superior): [Instalar PostgreSQL](https://www.postgresql.org/download/)
 
