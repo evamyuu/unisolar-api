@@ -681,7 +681,7 @@ public class UnisolarCLI implements CommandLineRunner {
     }
 
     private void showHelp() {
-        System.out.println("\nComandos disponíveis:");
+        System.out.println("\nSolarIA: Comandos disponíveis:");
         System.out.println("- 'como está meu sistema agora': Ver o estado atual do sistema");
         System.out.println("- 'economia total': Ver sua economia atual");
         System.out.println("- 'mostre o status da bateria': Ver status da bateria");
