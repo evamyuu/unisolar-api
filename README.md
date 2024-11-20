@@ -25,11 +25,11 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
    mvn clean install
    ```
 
-3. Iniciar o servidor
+3. Após configurar o banco de dados e a SolarIA, siga os passos abaixo para iniciar o servidor:
    
 - Localize a classe `ApiApplication.java` no seguinte caminho:
-    src/main/java/com/seuprojeto/unisolar/ApiApplication.java
-      
+    src/main/java/unisolar/api/ApiApplication.java
+   
 - Execute a classe para iniciar o servidor (Recomendado IntelliJ IDEA).
 
 ## 📦 Configuração do Banco de Dados
