@@ -54,6 +54,15 @@ public class UnisolarCLI implements CommandLineRunner {
     private final DecimalFormat df = new DecimalFormat("#,##0.00");
     private static Map<String, String> respostas;
 
+    /**
+     * Constructor for initializing dependencies.
+     *
+     * @param authenticationManager the authentication manager for handling login
+     * @param userController        the controller for managing user operations
+     * @param chatbotService        the service providing chatbot functionalities
+     * @param featureSearchService  the service enabling feature searches
+     * @param userSeeder            the utility for seeding default users
+     */
     public UnisolarCLI(AuthenticationManager authenticationManager,
                        UserController userController,
                        ChatbotService chatbotService,
@@ -67,6 +76,13 @@ public class UnisolarCLI implements CommandLineRunner {
         this.userSeeder = userSeeder;
     }
 
+    /**
+     * Main method executed when the application starts. It initializes the user seeding
+     * process and continuously displays menus for user interaction.
+     *
+     * @param args command-line arguments passed to the application
+     * @throws Exception if an error occurs during execution
+     */
     @Override
     public void run(String... args) throws Exception {
 
@@ -87,6 +103,9 @@ public class UnisolarCLI implements CommandLineRunner {
         System.out.println("=====================================");
     }
 
+    /**
+     * Displays the login menu, allowing users to log in or register.
+     */
     private void showLoginMenu() {
         System.out.println("\n=========== Unisolar 🌞 =============");
         System.out.println("      Energia que transforma vidas      ");
@@ -117,7 +136,11 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
-
+    /**
+     * Displays the main menu, providing access to various functionalities.
+     *
+     * @return true to keep the menu running, false to exit
+     */
     private boolean showMainMenu() {
         System.out.println("\n=========== Home ===========");
         System.out.println("1. Buscar 🔎");
@@ -157,6 +180,9 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Handles the user login process, including authentication.
+     */
     private void doLogin() {
         System.out.println("\n=========== Login 🔑 ===========");
         System.out.print("Username: ");
@@ -173,6 +199,9 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Handles user registration by collecting user details and sending them to the controller.
+     */
     private void doRegister() {
         System.out.println("\n=========== Cadastro 📝 ===========");
         System.out.print("Nome: ");
@@ -195,6 +224,9 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Displays the dashboard menu and various system statuses and features for the logged-in user.
+     */
     private void showDashboard() {
 
         System.out.println("\n=========== Dashboard 📊 ===========");
@@ -269,6 +301,9 @@ public class UnisolarCLI implements CommandLineRunner {
         System.out.println("\n✅ Saindo do Dashboard. Até logo!\n");
     }
 
+    /**
+     * Displays a feature search interface, allowing users to search for functionalities.
+     */
     private void showFeatureSearch() {
         System.out.println("\n=========== Busca de Funcionalidades 🔍 ===========");
         System.out.println("Digite 'voltar' para retornar ao menu principal");
@@ -300,6 +335,12 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Handles displaying AI-driven energy optimization decisions based on solar panel
+     * and battery performance for the current day and upcoming night.
+     *
+     * @param installation The installation details of the current user, including solar panels and battery information.
+     */
     private void mostrarDecisoesDaIA(Installation installation) {
         if (installation != null) {
             System.out.println("\n=== O Que a SolarIA planejou para você hoje? ===");
@@ -344,6 +385,12 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Retrieves installation details for a specific user based on their user ID.
+     *
+     * @param userId The unique identifier of the user.
+     * @return The installation details, or null if the data could not be retrieved.
+     */
     private Installation getInstallationDetails(Long userId) {
 
         ResponseEntity<Installation> installationResponse = userController.getUserInstallation(userId);
@@ -355,6 +402,11 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Displays the current system status, including energy source, battery level, and solar panel performance.
+     *
+     * @param installation The installation details of the user.
+     */
     private void mostrarStatus(Installation installation) {
         if (installation != null) {
             System.out.println("\n=== Status do Sistema ===");
@@ -382,6 +434,11 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Displays energy consumption data and calculates estimated savings for the user.
+     *
+     * @param installation The installation details of the user.
+     */
     private void mostrarEconomia(Installation installation) {
         if (installation != null) {
             System.out.println("\n=== Economia ===");
@@ -406,6 +463,15 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Displays the authenticated user's profile and provides options to update or delete the profile.
+     *
+     * This method fetches the current user's details, such as their name, email, and username.
+     * It then presents the user with a menu to:
+     * 1. Update the profile.
+     * 2. Delete the profile.
+     * 3. Return to the previous menu.
+     */
     private void showUserProfile() {
         ResponseEntity<UserDetailDTO> response = userController.getCurrentUser(currentAuthentication);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -438,6 +504,15 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Updates the user's profile with new information (name, email, username).
+     *
+     * Prompts the user for new values for their name, email, and username. If any field is left blank,
+     * the current value is retained. The updated information is then sent to the server for processing.
+     * If the update is successful, a success message is shown, otherwise, an error message is displayed.
+     *
+     * @param currentUser The current user's details to be updated.
+     */
     private void updateProfile(UserDetailDTO currentUser) {
         System.out.println("\n=========== Atualizar Perfil ✏️ ===========");
         System.out.println("Deixe em branco para manter o valor atual");
@@ -467,6 +542,12 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Changes the user's password.
+     *
+     * Prompts the user for their current password and the new password. Then, it sends the password change
+     * request to the server. If successful, the user is logged out and asked to log in again with the new password.
+     */
     private void changePassword() {
         ResponseEntity<UserDetailDTO> response = userController.getCurrentUser(currentAuthentication);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -491,6 +572,14 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Deletes the user's profile after a confirmation from the user.
+     *
+     * Asks the user to confirm whether they want to delete their profile. If confirmed, the profile is
+     * deactivated on the server, and the user is logged out. If the operation fails, an error message is displayed.
+     *
+     * @param currentUser The current user's details to be deleted.
+     */
     private void deleteProfile(UserDetailDTO currentUser) {
         System.out.println("\n=========== Deletar Perfil 🗑️ ===========");
         System.out.print("Tem certeza que deseja deletar seu perfil? (s/n): ");
@@ -513,6 +602,15 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Generates a progress bar based on the given percentage.
+     *
+     * This method creates a simple visual representation of a progress bar by dividing the total bar size
+     * (20 units) based on the provided percentage. Filled segments are represented by "█" and empty ones by "░".
+     *
+     * @param porcentagem The progress percentage (0 to 100).
+     * @return A string representing the progress bar.
+     */
     private String gerarBarraProgresso(int porcentagem) {
         int barSize = 20;
         int preenchido = (int) ((porcentagem / 100.0) * barSize);
@@ -525,6 +623,13 @@ public class UnisolarCLI implements CommandLineRunner {
         return barra.toString();
     }
 
+    /**
+     * Displays the maintenance status of the solar system components, including solar panels and battery.
+     * For each component, it checks for the need for maintenance based on various factors such as
+     * efficiency, age, and random conditions to simulate real-world maintenance needs.
+     *
+     * @param installation The solar system installation that contains the solar panels and battery.
+     */
     private void mostrarManutencao(Installation installation) {
         if (installation != null) {
             System.out.println("\n=== Manutenção do Sistema ===");
@@ -560,7 +665,11 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
-    private void mostrarDicas() {
+    /**
+     * Displays energy-saving tips to help users maximize their solar energy usage
+     * and reduce overall energy consumption.
+     */
+     private void mostrarDicas() {
         System.out.println("\n=== Dicas para Economia de Energia ===");
         System.out.println("1. Aproveite ao máximo a energia solar durante o dia.");
         System.out.println("2. Evite picos de consumo de energia, distribuindo o uso de aparelhos ao longo do dia.");
@@ -568,6 +677,12 @@ public class UnisolarCLI implements CommandLineRunner {
         System.out.println("4. Considere melhorar a eficiência energética da sua casa com melhores eletrodomésticos.");
     }
 
+    /**
+     * Displays the forecasted energy generation and consumption over the next 24 hours.
+     * Also provides an estimate of potential savings based on solar energy usage.
+     *
+     * @param installation The installation containing the solar panels and battery.
+     */
     private void mostrarPrevisaoEnergia(Installation installation) {
         if (installation != null) {
             System.out.println("\n=== Previsão de Energia ===");
@@ -598,6 +713,10 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Initializes predefined responses for different user queries.
+     * These responses are tailored to give personalized information about the user's solar system status.
+     */
     private void initializeResponses() {
         respostas = new HashMap<>();
         ResponseEntity<UserDetailDTO> userResponse = userController.getCurrentUser(currentAuthentication);
@@ -644,6 +763,11 @@ public class UnisolarCLI implements CommandLineRunner {
         respostas.put("o que é net metering", "O Net Metering é um programa que permite que você envie a energia excedente gerada pelos seus painéis solares de volta para a rede elétrica, gerando créditos que podem ser usados posteriormente para reduzir sua conta de energia. 💚");
     }
 
+    /**
+     * Starts the interactive chat with the user.
+     * This method initializes the responses and continuously listens for user input to provide information.
+     * It allows the user to exit the chat or request help with commands at any time.
+     */
     public void startChat() {
         initializeResponses();
         System.out.println("\n=========== Chat com SolarIA 🤖 ===========");
@@ -680,6 +804,9 @@ public class UnisolarCLI implements CommandLineRunner {
         }
     }
 
+    /**
+     * Displays available commands to the user to guide them on how to interact with SolarIA.
+     */
     private void showHelp() {
         System.out.println("\nSolarIA: Comandos disponíveis:");
         System.out.println("- 'como está meu sistema agora': Ver o estado atual do sistema");
@@ -693,6 +820,13 @@ public class UnisolarCLI implements CommandLineRunner {
         System.out.println("- 'sair': Voltar ao menu principal");
     }
 
+    /**
+     * Retrieves the response based on the user's input.
+     * The input is normalized, and a matching response is returned from the predefined list.
+     *
+     * @param input The user’s input query.
+     * @return The corresponding response or null if no match is found.
+     */
     private static String getResposta(String input) {
 
         String normalizedInput = normalizeText(input.toLowerCase());
@@ -708,6 +842,12 @@ public class UnisolarCLI implements CommandLineRunner {
         return null;
     }
 
+    /**
+     * Normalizes the input text by removing special characters and accents for easier matching.
+     *
+     * @param text The text to normalize.
+     * @return The normalized text.
+     */
     private static String normalizeText(String text) {
 
         String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
