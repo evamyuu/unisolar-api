@@ -1,5 +1,6 @@
 # Unisolar 🌞 - Backend
 
+![Unisolar Header](https://i.ibb.co/t8nwRGs/Banner.png)
 ## 🌍 Visão Geral
 
 O projeto Unisolar visa otimizar o uso de energia renovável, utilizando painéis solares, baterias de carros elétricos reutilizadas e um sistema baseado em IA para maximizar a eficiência no consumo e armazenamento de energia.
@@ -7,9 +8,36 @@ A solução oferece uma maneira inteligente de aproveitar a energia solar, propo
 
 ## 🛠 Pré-requisitos
 
-- Java 17 ou superior
-- Maven para gerenciamento de dependências
-- PostgreSQL como banco de dados
+- **Java 17**: [Instalar Java 17](https://www.oracle.com/br/java/technologies/downloads/)
+- **Maven** (versão 3.6 ou superior): [Instalar Maven](https://maven.apache.org/install.html)
+- **PostgreSQL** (versão 12 ou superior): [Instalar PostgreSQL](https://www.postgresql.org/download/)
+
+## 🚀 Rodando a Aplicação Localmente
+
+### Passos de Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/evamyuu/unisolar-api
+   ```
+
+2. Certifique-se de que o Maven está instalado executando o comando abaixo no terminal:
+   ```bash
+   mvn -v
+   ```
+
+3. Abra o terminal na raiz do projeto (diretório onde o arquivo `pom.xml` está localizado) e execute:
+   ```bash
+   mvn clean install
+   ```
+   Isso irá baixar todas as dependências necessárias para o projeto.
+
+4. Após configurar o banco de dados e a SolarIA, siga os passos abaixo para iniciar o servidor:
+
+- Localize a classe `ApiApplication.java` no seguinte caminho:
+  src/main/java/unisolar/api/ApiApplication.java
+
+- Execute a classe para iniciar o servidor (Recomendado IntelliJ IDEA).
 
 ## 📦 Configuração do Banco de Dados
 
@@ -40,8 +68,10 @@ api.security.token.secret=${JWT_SECRET:12345678}
 
 ```properties
 app.openai.api.key=SUA_CHAVE_OPENAI
-app.openai.assistant.id=SEU_ID_ASSISTENTE
+app.openai.assistant.id=asst_npBEXmBi86X176hjRqpwToby
 ```
+**Observação**:
+A chave OpenAI configurada no nosso arquivo `application.properties` é apenas um exemplo e **não é válida**.
 
 **Notas de Segurança**:
 - **NUNCA** compartilhe sua chave de API publicamente
@@ -56,25 +86,9 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 - Caso a aplicação não detectar uma chave válida, as respostas serão geradas por um modelo de resposta simulado para perguntas comuns
 - **Objetivo**: Permitir que desenvolvedores e usuários testem o sistema completamente
 
-## 🚀 Rodando a Aplicação Localmente
-
-### Passos de Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/evamyuu/unisolar-api
-   ```
-
-2. Instale as dependências:
-   ```bash
-   mvn clean install
-   ```
-
-3. Inicie o servidor:
-    - Encontre a classe `ApiApplication.java`
-    - Execute a classe no seu IDE (recomendado IntelliJ)
-
 ## 🔐 Credenciais Padrão
+
+Após iniciar o servidor, será gerado automaticamente um usuário padrão. Utilize as credenciais abaixo para realizar o login ou, se preferir, crie um novo cadastro.
 
 - **Usuário**: `user`
 - **Senha**: `password`
@@ -92,7 +106,6 @@ app.openai.assistant.id=SEU_ID_ASSISTENTE
 4. 🤖 Chat com SolarIA
 5. 🔒 Alterar Senha
 6. 🚶‍♂️ Logout
-
 ## 📚 Documentação da API
 
 Acesse a documentação Swagger em:
@@ -100,7 +113,7 @@ Acesse a documentação Swagger em:
 
 ## 🤝 Como Contribuir
 
-Unisolar é um projeto open source, e a melhor maneira de contribuir é divulgando o projeto. 
+Unisolar é um projeto open source, e a melhor maneira de contribuir é divulgando o projeto.
 Compartilhe com amigos, familiares e nas redes sociais para ajudar a alcançar mais pessoas que possam se beneficiar ou contribuir para o projeto.
 
 ## 📞 Suporte e Feedback
@@ -114,4 +127,4 @@ Projeto licenciado sob a **Licença MIT**
 
 ---
 
-**Desenvolvido com 💚 pelo Unisolar Team**
+**Desenvolvido com 🧡💚💙 pelo Unisolar Team**
