@@ -625,7 +625,7 @@ public class UnisolarCLI implements CommandLineRunner {
         respostas.put("sugestão de uso da bateria", "🔋 Recomendação de Uso:\nUse a bateria: 18h-21h\nRecarregue: 23h-5h\nEconomia estimada: R$ 18,50\nSua bateria está otimizada para seu padrão de consumo! ⚡");
         respostas.put("dicas do dia", "🌟 Dicas de Hoje:\n1. Dia ensolarado: aproveite para lavar roupas\n2. Bateria está cheia: ideal para usar à noite\n3. Tarifa alta às 18h: use a bateria\nSiga as dicas e economize + R$ 12,00 hoje!");
 
-        respostas.put("preciso de manutenção", "🔧 Análise de Manutenção:\nPainéis: OK (98% eficiência)\nBateria: OK (95% saúde)\nInversor: OK (97% eficiência)\nPróxima manutenção preventiva: 15 dias\nSeu sistema está em ótimo estado! ✨");
+        respostas.put("preciso de manutenção", "🔧 Análise de Manutenção:\nPainéis: OK (98% eficiência)\nBateria: OK (85% saúde)\nInversor: OK (97% eficiência)\nPróxima manutenção preventiva: 15 dias\nSeu sistema está em ótimo estado! ✨");
         respostas.put("quando limpar painéis", "🧹 Recomendação de Limpeza:\nÚltima limpeza: 12 dias atrás\nEficiência atual: 96%\nPrevisão de chuva: Em 3 dias\nSugestão: Aguarde a chuva para avaliar necessidade de limpeza 👍");
         respostas.put("relatório de eficiência", "📋 Relatório Completo:\nEficiência Geral: 95%\nPainéis: 96%\nBateria: 94%\nInversor: 98%\nSeu sistema está entre os 10% mais eficientes! 🏆");
         respostas.put("histórico de manutenção", "📚 Histórico de Manutenções:\nÚltima geral: 60 dias atrás\nÚltima limpeza: 12 dias\nPróxima prevista: 20 dias\nTodas manutenções em dia! ✅");
@@ -640,7 +640,7 @@ public class UnisolarCLI implements CommandLineRunner {
         respostas.put("agendamento técnico", "👨‍🔧 Agendamento Técnico:\nPróxima visita disponível: 3 dias\nDuração: 1-2 horas\nCusto: Dentro da garantia\nDeseja agendar uma visita?");
 
         respostas.put("como economizar energia com o sistema solarIA", "Você pode economizar energia ajustando o uso de eletrodomésticos durante o dia, aproveitando a energia solar. O sistema também otimiza o uso da bateria para garantir que você use a energia armazenada quando for mais vantajoso. 💡");
-        respostas.put("como o sistema decide quando usar a energia da bateria e quando usar a rede elétrica", "A IA avalia o consumo, a previsão do tempo e as tarifas de energia. Ela usa energia da bateria quando necessário, e opta pela rede elétrica em horários de tarifa mais baixa ou se a bateria estiver quase descarregada. 🤖");
+        respostas.put("como você decide quando usar a bateria e quando usar a energia solar?", "Eu avalio o consumo, a previsão do tempo e as tarifas de energia.\nSe a previsão de tempo diz que vai chover ou ficar nublado, eu guardo a carga da bateria para quando realmente precisar.\nSe a previsão do tempo indica chuva ou céu nublado, eu guardo a carga da bateria para quando realmente precisar.\nEsses são alguns exemplos de como faço isso para você. 🤖");
         respostas.put("o que é net metering", "O Net Metering é um programa que permite que você envie a energia excedente gerada pelos seus painéis solares de volta para a rede elétrica, gerando créditos que podem ser usados posteriormente para reduzir sua conta de energia. 💚");
     }
 
